@@ -1,31 +1,29 @@
 import requests
 import json
 
-def router(lookingDataType):
+def router(lookingDataType, lookingCoinType):
     Data = {
-        "Tick" : lambda: Tick(),
-        "Bid"  : lambda: Bid(),
-        "Ask"  : lambda: Ask(),
-        "Volumns"  : lambda: Volumns(),
-    }.get(lookingDataType, lambda: print('E'))()
+        "Tick" : lambda: Tick(lookingCoinType),
+        "Bid"  : lambda: Bid(lookingCoinType),
+        "Ask"  : lambda: Ask(lookingCoinType),
+        "Volumns"  : lambda: Volumns(lookingCoinType),
+    }.get(lookingDataType, lambda: print('we do not have this data type'))()
     return Data
 
-def Tick():
+def Tick(lookingCoinType):
     # it only support usd
-    URL = "https://api.maicoin.com/v1/prices/usd"
+    URL = "https://api.maicoin.com/v1/prices/"+lookingCoinType
     apiData = requests.get(URL)
     dataObj = json.loads(apiData.text)
-    data = {
-        'USD':dataObj['price'],
-    }
+    data = dataObj['price']
 
     return data
 
-def Bid():
+def Bid(lookingCoinType):
     return "not done yet"
 
-def Ask():
+def Ask(lookingCoinType):
     return "not done yet"
 
-def Volumns():
+def Volumns(lookingCoinType):
     return "not done yet"
