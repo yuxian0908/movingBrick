@@ -17,8 +17,8 @@ if __name__ == "__main__":
     Data = {
         "MaxMaiCoin" : lambda: MaxMaiCoin.router(lookingDataType,lookingCoinType),
 
-    }.get(tradePlace, lambda: print('we do not have this trade place'))()
+    }.get(tradePlace, lambda: print('we do not support this trade place'))()
 
-    print(Data)
+    print("your data: ",Data)
 
     # python3 main.py MaxMaiCoin Tick
