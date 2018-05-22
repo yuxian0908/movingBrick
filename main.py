@@ -5,7 +5,7 @@ if __name__ == "__main__":
 
     tradePlace = "bitopro"
     lookingDataType = "Tick"
-    lookingCoinType = "ltc"
+    lookingCoinType = "btc"
     
     # print('enter the trading place')
     # tradePlace = input("input:")
@@ -17,8 +17,8 @@ if __name__ == "__main__":
     # lookingCoinType = input("input:")
 
     Data = {
-        "MaxMaiCoin" : lambda: MaxMaiCoin.router(lookingDataType,lookingCoinType),
-        "bitopro" : lambda: bitopro.router(lookingDataType,lookingCoinType)
+        "MaxMaiCoin" : lambda: MaxMaiCoin.MaxMaiCoin(lookingDataType,lookingCoinType).router(),
+        "bitopro" : lambda: bitopro.bitopro(lookingDataType,lookingCoinType).router()
 
     }.get(tradePlace, lambda: print('we do not support this trade place'))()
 
