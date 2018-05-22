@@ -2,8 +2,9 @@ import requests
 import json
 from decimal import Decimal
 import time
+from .tradePlace import tradePlace
 
-class bitopro:
+class bitopro(tradePlace):
     def __init__(self, lookingDataType, lookingCoinType):
         self.lookingDataType = lookingDataType
         self.lookingCoinType = lookingCoinType

@@ -1,8 +1,10 @@
 import requests
 import json
 from decimal import Decimal
+from .tradePlace import tradePlace
 
-class MaxMaiCoin:
+
+class MaxMaiCoin(tradePlace):
     def __init__(self, lookingDataType, lookingCoinType):
         self.lookingDataType = lookingDataType
         self.lookingCoinType = lookingCoinType
