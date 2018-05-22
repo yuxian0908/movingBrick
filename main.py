@@ -4,7 +4,7 @@ if __name__ == "__main__":
     import tradePlace.bitopro as bitopro
 
     tradePlace = "bitopro"
-    lookingDataType = "Ask"
+    lookingDataType = "Tick"
     lookingCoinType = "ltc"
     
     # print('enter the trading place')
@@ -25,13 +25,3 @@ if __name__ == "__main__":
     print("your data: ",Data)
 
    
-
-    # test google authenticator
-    def test():
-        import time
-        import pyotp
-        totp = pyotp.TOTP("LNZREXIQXPNXUESK") 
-        print(totp.now()) 
-        print(totp.verify(totp.now()))
-        totp.provisioning_uri("alice@google.com") 
-    test()

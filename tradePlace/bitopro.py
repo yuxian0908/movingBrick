@@ -2,7 +2,6 @@ import requests
 import json
 from decimal import Decimal
 import time
-import pyotp
 
 def router(lookingDataType, lookingCoinType):
     Data = {
@@ -22,6 +21,8 @@ def Tick(lookingCoinType):
     print(lookingCoinType)
     cookie = {}
 
+    session = requests.Session()
+
     if lookingCoinType=="btc":
         #BTC
         cookie = {'session': '51731c9f09d1517e485bfc55696126d4'}
@@ -31,7 +32,8 @@ def Tick(lookingCoinType):
     elif lookingCoinType=="eth":
         #ETH
         cookie = {'session': '5ef3f4f26870e21e53ad5674d475b444'}
-    btcToTwd = requests.get("https://www.bitopro.com/trading_datas/history?symbol="+lookingCoinType+"&resolution=180&from="+beginTime+"&to="+currentTime,cookies=cookie)
+
+    btcToTwd = session.get("https://www.bitopro.com/trading_datas/history?symbol="+lookingCoinType+"&resolution=180&from="+beginTime+"&to="+currentTime,cookies=cookie)
     btcToTwd = json.loads(btcToTwd.text)
 
     return btcToTwd[0][4]
