@@ -2,6 +2,7 @@ if __name__ == "__main__":
     import sys
     from tradePlace.MaxMaiCoin import MaxMaiCoin
     from tradePlace.bitopro import bitopro
+    import otp as test
 
     tradePlace = "bitopro"
     lookingDataType = "Tick"
@@ -25,3 +26,4 @@ if __name__ == "__main__":
     print("your data: ",Data)
 
    
+    test.test()
