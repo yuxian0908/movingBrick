@@ -2,7 +2,13 @@ import requests
 import json
 from decimal import Decimal
 import time
+from lxml import html
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+import urllib
+
 from .tradePlace import tradePlace
+import helper.bitopro as helper
 
 class bitopro(tradePlace):
     def __init__(self, lookingDataType, lookingCoinType):
@@ -10,6 +16,7 @@ class bitopro(tradePlace):
         self.lookingCoinType = lookingCoinType
  
     def router(self):
+        self.browser = self.login()
         Data = {
             "Tick" : lambda: self.Tick(),
             "Bid"  : lambda: self.Bid(),
@@ -65,4 +72,4 @@ class bitopro(tradePlace):
 
 
     def login(self):
-        return
+        return helper.login()
