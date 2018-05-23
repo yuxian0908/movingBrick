@@ -8,15 +8,15 @@ from selenium.webdriver.common.keys import Keys
 import urllib
 
 from .tradePlace import tradePlace
-import helper.bitopro as helper
+from helper.bitopro import bitoproHelper
 
 class bitopro(tradePlace):
     def __init__(self, lookingDataType, lookingCoinType):
+        self.helper = self.login()
         self.lookingDataType = lookingDataType
         self.lookingCoinType = lookingCoinType
  
     def router(self):
-        self.browser = self.login()
         Data = {
             "Tick" : lambda: self.Tick(),
             "Bid"  : lambda: self.Bid(),
@@ -28,29 +28,13 @@ class bitopro(tradePlace):
 
 
     def Tick(self):
-        currentTime = int(time.time())
-        beginTime = str(currentTime-1000)
-        currentTime = str(currentTime)
-        cookie = {}
-
-        session = requests.Session()
 
         if self.lookingCoinType=="btc":
-            #BTC
-            cookie = {'session': '51731c9f09d1517e485bfc55696126d4'}
+            return self.helper.getTick(self.lookingCoinType)
         elif self.lookingCoinType=="ltc":
-            #LTC
-            cookie = {'session': '6012a6d6586b0ae11feb20cec83a662d'}
+            return "btcData"
         elif self.lookingCoinType=="eth":
-            #ETH
-            cookie = {'session': '5ef3f4f26870e21e53ad5674d475b444'}
-
-        btcToTwd = session.get("https://www.bitopro.com/trading_datas/history?symbol="+
-                                    self.lookingCoinType+"&resolution=180&from="+
-                                    beginTime+"&to="+currentTime,cookies=cookie)
-        btcToTwd = json.loads(btcToTwd.text)
-
-        return btcToTwd[0][4]
+            return "btcData"
 
 
     def Bid(self):
@@ -72,4 +56,6 @@ class bitopro(tradePlace):
 
 
     def login(self):
-        return helper.login()
+        helper = bitoproHelper()
+        helper.login()
+        return helper
