@@ -4,9 +4,9 @@ if __name__ == "__main__":
     from tradePlace.bitopro import bitopro
     import otp as test
 
-    tradePlace = "bitopro"
-    lookingDataType = "Tick"
-    lookingCoinType = "btc"
+    # tradePlace = "bitopro"
+    # lookingDataType = "Tick"
+    # lookingCoinType = "btc"
     
     # print('enter the trading place')
     # tradePlace = input("input:")
@@ -17,13 +17,13 @@ if __name__ == "__main__":
     # print('enter what type of coin you want to look up')
     # lookingCoinType = input("input:")
 
-    Data = {
-        "MaxMaiCoin" : lambda: MaxMaiCoin(lookingDataType,lookingCoinType).router(),
-        "bitopro" : lambda: bitopro(lookingDataType,lookingCoinType).router()
+    # Data = {
+    #     "MaxMaiCoin" : lambda: MaxMaiCoin(lookingDataType,lookingCoinType).router(),
+    #     "bitopro" : lambda: bitopro(lookingDataType,lookingCoinType).router()
 
-    }.get(tradePlace, lambda: print('we do not support this trade place'))()
+    # }.get(tradePlace, lambda: print('we do not support this trade place'))()
 
-    print("your data: ",Data)
+    # print("your data: ",Data)
 
    
     test.test()

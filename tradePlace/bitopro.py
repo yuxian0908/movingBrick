@@ -62,3 +62,7 @@ class bitopro(tradePlace):
 
     def Volumns(self):
         return "not done yet"
+
+
+    def login(self):
+        return

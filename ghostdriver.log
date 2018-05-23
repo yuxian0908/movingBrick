@@ -1,0 +1,12 @@
+[INFO  - 2018-05-23T10:42:09.154Z] GhostDriver - Main - running on port 60171
+[INFO  - 2018-05-23T10:42:13.132Z] Session [f3eadc40-5e75-11e8-9d73-05ff348a8c8a] - page.settings - {"XSSAuditingEnabled":false,"javascriptCanCloseWindows":true,"javascriptCanOpenWindows":true,"javascriptEnabled":true,"loadImages":true,"localToRemoteUrlAccessEnabled":false,"userAgent":"Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/538.1 (KHTML, like Gecko) PhantomJS/2.1.1 Safari/538.1","webSecurityEnabled":true}
+[INFO  - 2018-05-23T10:42:13.132Z] Session [f3eadc40-5e75-11e8-9d73-05ff348a8c8a] - page.customHeaders:  - {}
+[INFO  - 2018-05-23T10:42:13.134Z] Session [f3eadc40-5e75-11e8-9d73-05ff348a8c8a] - Session.negotiatedCapabilities - {"browserName":"phantomjs","version":"2.1.1","driverName":"ghostdriver","driverVersion":"1.2.0","platform":"windows-10-32bit","javascriptEnabled":true,"takesScreenshot":true,"handlesAlerts":false,"databaseEnabled":false,"locationContextEnabled":false,"applicationCacheEnabled":false,"browserConnectionEnabled":false,"cssSelectorsEnabled":true,"webStorageEnabled":false,"rotatable":false,"acceptSslCerts":false,"nativeEvents":true,"proxy":{"proxyType":"direct"}}
+[INFO  - 2018-05-23T10:42:13.134Z] SessionManagerReqHand - _postNewSessionCommand - New Session Created: f3eadc40-5e75-11e8-9d73-05ff348a8c8a
+[ERROR - 2018-05-23T10:42:17.814Z] Session [f3eadc40-5e75-11e8-9d73-05ff348a8c8a] - page.onError - msg: TypeError: undefined is not a constructor (evaluating '"0".repeat(8-t.length)')
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2018-05-23T10:42:17.815Z] Session [f3eadc40-5e75-11e8-9d73-05ff348a8c8a] - page.onError - stack:
+  A (https://www.bitopro.com/assets/application-813aa2a69ea7df2629e9e7cbe89bc8d88e0cf7098691ab737b0f3bd262310ce4.js:40)
+
+  phantomjs://platform/console++.js:263 in error
