@@ -26,4 +26,5 @@ if __name__ == "__main__":
     # print("your data: ",Data)
 
    
-    test.test()
+    # bitopro(lookingDataType,lookingCoinType).login()
+    test.login()
