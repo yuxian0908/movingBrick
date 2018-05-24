@@ -101,11 +101,17 @@ class bitoproHelper:
         browser.find_element_by_xpath(".//*[@id='navbar']/ul/li[contains(@class, 'currency')]/ul[contains(@role,'menu')]/*["+index+"]/a").click()
         time.sleep(1)
 
+        # get browser cookie
+        cookies_list = browser.get_cookies()
+        cookies_dict = {}
+        for cookie in cookies_list:
+            cookies_dict[cookie['name']] = cookie['value']
+
         # use request to get data
         currentTime = int(time.time())
         beginTime = str(currentTime-48000)
         currentTime = str(currentTime)
-        apiData = requests.get("https://www.bitopro.com/trading_datas/history?resolution=180&from="+beginTime+"&to="+currentTime)
+        apiData = requests.get("https://www.bitopro.com/trading_datas/history?resolution=180&from="+beginTime+"&to="+currentTime, cookies=cookies_dict)
         apiData = json.loads(apiData.text)
         
         results = list()

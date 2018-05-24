@@ -3,7 +3,7 @@ if __name__ == "__main__":
     from tradePlace.MaxMaiCoin import MaxMaiCoin
     from tradePlace.bitopro import bitopro
 
-    tradePlace = "MaxMaiCoin"
+    tradePlace = "bitopro"
     lookingDataType = "All"
     lookingCoinType = "ltc"
     
