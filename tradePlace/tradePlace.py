@@ -11,13 +11,5 @@ class tradePlace(metaclass = ABCMeta):
         pass
 
     @abstractmethod
-    def Bid(self):
-        pass
-
-    @abstractmethod
-    def Ask(self):
-        pass
-
-    @abstractmethod
-    def Volumns(self): 
+    def All(self):
         pass

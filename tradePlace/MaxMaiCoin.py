@@ -12,9 +12,7 @@ class MaxMaiCoin(tradePlace):
     def router(self):
         Data = {
             "Tick" : lambda: self.Tick(),
-            "Bid"  : lambda: self.Bid(),
-            "Ask"  : lambda: self.Ask(),
-            "Volumns"  : lambda: self.Volumns(),
+            "All"  : lambda: self.All(),
         }.get(self.lookingDataType, lambda: print('we do not support this data type'))()
         return Data
 
@@ -46,11 +44,5 @@ class MaxMaiCoin(tradePlace):
         return returnData
 
 
-    def Bid(self):
-        return "not done yet"
-
-    def Ask(self):
-        return "not done yet"
-
-    def Volumns(self): 
+    def All(self):
         return "not done yet"

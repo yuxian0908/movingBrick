@@ -12,16 +12,14 @@ from helper.bitopro import bitoproHelper
 
 class bitopro(tradePlace):
     def __init__(self, lookingDataType, lookingCoinType):
-        self.helper = self.login()
         self.lookingDataType = lookingDataType
         self.lookingCoinType = lookingCoinType
  
     def router(self):
+        self.helper = self.login()
         Data = {
             "Tick" : lambda: self.Tick(),
-            "Bid"  : lambda: self.Bid(),
-            "Ask"  : lambda: self.Ask(),
-            "Volumns"  : lambda: self.Volumns(),
+            "All"  : lambda: self.All(),
         }.get(self.lookingDataType, lambda: print('we do not support this data type'))()
         return Data
 
@@ -31,23 +29,8 @@ class bitopro(tradePlace):
         return self.helper.getTick(self.lookingCoinType)
 
 
-    def Bid(self):
-        currentTime = int(time.time())
-        beginTime = str(currentTime-48000)
-        currentTime = str(currentTime)
-        btcToTwd = requests.get("https://www.bitopro.com/trading_datas/history?symbol=BTC&resolution=180&from="+beginTime+"&to="+currentTime)
-        btcToTwd = json.loads(btcToTwd.text)
-        for data in btcToTwd:
-            print(data[4])
-        return "not done yet"
-
-    def Ask(self):
-
-        return "not done yet"
-
-    def Volumns(self):
-        return "not done yet"
-
+    def All(self):
+        return self.helper.getBid(self.lookingCoinType)
 
     def login(self):
         helper = bitoproHelper()

@@ -5,6 +5,7 @@ from lxml import html
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import urllib
+import json
 
 import pytesseract
 from PIL import Image
@@ -76,16 +77,46 @@ class bitoproHelper:
         
     def getTick(self,lookingCoinType):
         browser = self.browser
-
         index = ''
-
         if lookingCoinType=="btc":
             index = '2'
         elif lookingCoinType=="ltc":
             index = '3'
         elif lookingCoinType=="eth":
             index = '4'
-        
         data = browser.find_element_by_xpath(".//*[@id='quote']/div[contains(@class, 'ibox-content')]/table/tbody/*["+index+"]/*[2]").text
-
         return data
+
+    def getBid(self,lookingCoinType):
+        browser = self.browser
+        browser.find_element_by_xpath(".//*[@id='navbar']/ul/li[contains(@class, 'currency')]/a").click()
+        time.sleep(0.5)
+        index = ''
+        if lookingCoinType=="btc":
+            index = '1'
+        elif lookingCoinType=="ltc":
+            index = '2'
+        elif lookingCoinType=="eth":
+            index = '3'
+        browser.find_element_by_xpath(".//*[@id='navbar']/ul/li[contains(@class, 'currency')]/ul[contains(@role,'menu')]/*["+index+"]/a").click()
+        time.sleep(1)
+
+        # use request to get data
+        currentTime = int(time.time())
+        beginTime = str(currentTime-48000)
+        currentTime = str(currentTime)
+        apiData = requests.get("https://www.bitopro.com/trading_datas/history?resolution=180&from="+beginTime+"&to="+currentTime)
+        apiData = json.loads(apiData.text)
+        
+        results = list()
+        
+        for data in apiData:
+            result = {
+                'bid': data[1],
+                'ask': data[2],
+                'deal': data[4],
+                'volumns': data[5]
+            }
+            results.append(result)
+        
+        return results

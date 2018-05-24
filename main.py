@@ -3,8 +3,8 @@ if __name__ == "__main__":
     from tradePlace.MaxMaiCoin import MaxMaiCoin
     from tradePlace.bitopro import bitopro
 
-    tradePlace = "bitopro"
-    lookingDataType = "Tick"
+    tradePlace = "MaxMaiCoin"
+    lookingDataType = "All"
     lookingCoinType = "ltc"
     
     # print('enter the trading place')
