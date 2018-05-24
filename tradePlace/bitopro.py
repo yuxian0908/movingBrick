@@ -28,13 +28,7 @@ class bitopro(tradePlace):
 
 
     def Tick(self):
-
-        if self.lookingCoinType=="btc":
-            return self.helper.getTick(self.lookingCoinType)
-        elif self.lookingCoinType=="ltc":
-            return "btcData"
-        elif self.lookingCoinType=="eth":
-            return "btcData"
+        return self.helper.getTick(self.lookingCoinType)
 
 
     def Bid(self):

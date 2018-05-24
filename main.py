@@ -5,7 +5,7 @@ if __name__ == "__main__":
 
     tradePlace = "bitopro"
     lookingDataType = "Tick"
-    lookingCoinType = "btc"
+    lookingCoinType = "ltc"
     
     # print('enter the trading place')
     # tradePlace = input("input:")
@@ -22,6 +22,9 @@ if __name__ == "__main__":
 
     }.get(tradePlace, lambda: print('we do not support this trade place'))()
 
+    print("==============================================")
+    print("==============================================")
+    print("==============================================")
     print("your data: ",Data)
 
    

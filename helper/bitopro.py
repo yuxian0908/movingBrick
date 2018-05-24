@@ -74,11 +74,18 @@ class bitoproHelper:
             return
         time.sleep(1)  
         
-        
-
     def getTick(self,lookingCoinType):
+        browser = self.browser
+
+        index = ''
+
         if lookingCoinType=="btc":
-            browser = self.browser
-            test = browser.find_element_by_xpath(".//*[@id='quote']").get_attribute("class")
-            print(test)
-            return "aaa"
+            index = '2'
+        elif lookingCoinType=="ltc":
+            index = '3'
+        elif lookingCoinType=="eth":
+            index = '4'
+        
+        data = browser.find_element_by_xpath(".//*[@id='quote']/div[contains(@class, 'ibox-content')]/table/tbody/*["+index+"]/*[2]").text
+
+        return data
