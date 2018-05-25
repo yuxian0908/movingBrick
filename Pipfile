@@ -32,10 +32,10 @@ prompt_toolkit = "==1.0.15"
 Pygments = "==2.2.0"
 requests = "*"
 pyotp = "*"
-pytesseract = "*"
-pillow = "*"
 lxml = "*"
 selenium = "*"
+pillow = "*"
+pyquery = "*"
 
 [dev-packages]
 

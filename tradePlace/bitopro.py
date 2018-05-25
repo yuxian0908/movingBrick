@@ -1,5 +1,4 @@
 import requests
-import json
 from decimal import Decimal
 import time
 from lxml import html

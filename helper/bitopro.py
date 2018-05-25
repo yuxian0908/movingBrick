@@ -1,13 +1,11 @@
 import time
 import pyotp
 import requests
+import urllib
+import json
 from lxml import html
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-import urllib
-import json
-
-import pytesseract
 from PIL import Image
 
 class bitoproHelper:
