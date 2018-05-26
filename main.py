@@ -2,14 +2,18 @@ if __name__ == "__main__":
     import sys
     from tradePlace.MaxMaiCoin import MaxMaiCoin
     from tradePlace.bitopro import bitopro
-
+    from tradePlace.binance import binance
+    from tradePlace.cex import cex
+    from tradePlace.HitBTC import HitBTC
+    from tradePlace.poloniex import poloniex
+    from tradePlace.bitfinex import bitfinex
+    from tradePlace.bittrex import bittrex
 
     # test
-    tradePlace = "bitopro"
-    lookingDataType = "All"
-    lookingCoinType = "btc"
+    tradePlace = "bitfinex"
+    lookingDataType = "Tick"
+    lookingCoinType = "ltc"
     
-
     # prod
     # print('enter the trading place')
     # tradePlace = input("input:")
@@ -24,9 +28,15 @@ if __name__ == "__main__":
     Data = {
         # local tradePlace
         "MaxMaiCoin" : lambda: MaxMaiCoin(lookingDataType,lookingCoinType).router(),
-        "bitopro" : lambda: bitopro(lookingDataType,lookingCoinType).router()
+        "bitopro" : lambda: bitopro(lookingDataType,lookingCoinType).router(),
 
         # abroad tradePlace
+        "binance" : lambda: binance(lookingDataType,lookingCoinType).router(),
+        "cex" : lambda: cex(lookingDataType,lookingCoinType).router(),
+        "HitBTC" : lambda: HitBTC(lookingDataType,lookingCoinType).router(),
+        "poloniex" : lambda: poloniex(lookingDataType,lookingCoinType).router(),
+        "bitfinex" : lambda: bitfinex(lookingDataType,lookingCoinType).router(),
+        "bittrex" : lambda: binance(lookingDataType,lookingCoinType).router(),
     }.get(tradePlace, lambda: print('we do not support this trade place'))()
 
     print("==============================================")
