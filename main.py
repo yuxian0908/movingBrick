@@ -11,8 +11,8 @@ if __name__ == "__main__":
 
     # test
     tradePlace = "bitopro"
-    lookingDataType = "login"
-    lookingCoinType = "login"
+    lookingDataType = "Tick"
+    lookingCoinType = "eth"
     
     # prod
     # print('enter the trading place')

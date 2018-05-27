@@ -30,10 +30,10 @@ class bitoproHelper:
         while count<len(indexes):
             try:
                 index = indexes[count]
-                option = webdriver.ChromeOptions()
-                option.add_argument('headless')
-                browser = webdriver.Chrome(chrome_options=option)
-                # browser = webdriver.Chrome()
+                # option = webdriver.ChromeOptions()
+                # option.add_argument('headless')
+                # browser = webdriver.Chrome(chrome_options=option)
+                browser = webdriver.Chrome()
 
                 # enter loginin div
                 browser.get(LOGIN_URL)
@@ -72,7 +72,7 @@ class bitoproHelper:
                 browser.find_element_by_xpath(".//*[@id='navbar']/ul/li[contains(@class, 'currency')]/a").click()
                 time.sleep(0.5)
                 browser.find_element_by_xpath(".//*[@id='navbar']/ul/li[contains(@class, 'currency')]/ul[contains(@role,'menu')]/*["+index+"]/a").click()
-                time.sleep(1)
+                time.sleep(2)
 
                 # get browser cookie
                 cookies_list = browser.get_cookies()
@@ -92,59 +92,6 @@ class bitoproHelper:
             except:
                 print("=================something wrong===================")
                 count = count-1
-                
+
             count = count+1
         
-
-        
-    def getTick(self,lookingCoinType):
-        browser = self.browser
-        index = ''
-        if lookingCoinType=="btc":
-            index = '2'
-        elif lookingCoinType=="ltc":
-            index = '3'
-        elif lookingCoinType=="eth":
-            index = '4'
-        data = browser.find_element_by_xpath(".//*[@id='quote']/div[contains(@class, 'ibox-content')]/table/tbody/*["+index+"]/*[2]").text
-        return data
-
-    def getBid(self,lookingCoinType):
-        browser = self.browser
-        browser.find_element_by_xpath(".//*[@id='navbar']/ul/li[contains(@class, 'currency')]/a").click()
-        time.sleep(0.5)
-        index = ''
-        if lookingCoinType=="btc":
-            index = '1'
-        elif lookingCoinType=="ltc":
-            index = '2'
-        elif lookingCoinType=="eth":
-            index = '3'
-        browser.find_element_by_xpath(".//*[@id='navbar']/ul/li[contains(@class, 'currency')]/ul[contains(@role,'menu')]/*["+index+"]/a").click()
-        time.sleep(1)
-
-        # get browser cookie
-        cookies_list = browser.get_cookies()
-        cookies_dict = {}
-        for cookie in cookies_list:
-            cookies_dict[cookie['name']] = cookie['value']
-
-        # use request to get data
-        currentTime = int(time.time())
-        beginTime = str(currentTime-48000)
-        currentTime = str(currentTime)
-        apiData = requests.get("https://www.bitopro.com/trading_datas/history?resolution=180&from="+beginTime+"&to="+currentTime, cookies=cookies_dict)
-        apiData = json.loads(apiData.text)
-        
-        results = list()
-        
-        for data in apiData:
-            result = {
-                'bid': data[1],
-                'ask': data[2],
-                'deal': data[4],
-                'volumns': data[5]
-            }
-            results.append(result)
-        
-        return results
