@@ -10,7 +10,7 @@ if __name__ == "__main__":
     from tradePlace.bittrex import bittrex
 
     # test
-    tradePlace = "bitopro"
+    tradePlace = "bitfinex"
     lookingDataType = "All"
     lookingCoinType = "eth"
     
