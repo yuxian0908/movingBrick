@@ -15,10 +15,10 @@ class bitopro(tradePlace):
         self.lookingCoinType = lookingCoinType
  
     def router(self):
-        self.helper = self.login()
         Data = {
             "Tick" : lambda: self.Tick(),
             "All"  : lambda: self.All(),
+            "login" : lambda: self.login(),
         }.get(self.lookingDataType, lambda: print('we do not support this data type'))()
         return Data
 

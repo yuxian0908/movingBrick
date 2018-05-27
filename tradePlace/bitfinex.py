@@ -48,4 +48,11 @@ class bitfinex(tradePlace):
 
 
     def All(self):
-        return "https://api.bitfinex.com/v2/"
+        open('helper/bitoproCookies.txt', 'w').close()
+        for index in ['1','2','3']:
+            cookies_dict = ["1","2","2"]
+            cookies_dict = json.dumps(cookies_dict)
+            cookiefile = open('helper/bitoproCookies.txt', "a+")
+            cookiefile.writelines(cookies_dict) 
+            cookiefile.write("\n")
+        return "test/"
