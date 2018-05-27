@@ -30,10 +30,10 @@ class bitoproHelper:
         while count<len(indexes):
             try:
                 index = indexes[count]
-                # option = webdriver.ChromeOptions()
-                # option.add_argument('headless')
-                # browser = webdriver.Chrome(chrome_options=option)
-                browser = webdriver.Chrome()
+                option = webdriver.ChromeOptions()
+                option.add_argument('headless')
+                browser = webdriver.Chrome(chrome_options=option)
+                # browser = webdriver.Chrome()
 
                 # enter loginin div
                 browser.get(LOGIN_URL)
@@ -95,3 +95,4 @@ class bitoproHelper:
 
             count = count+1
         
+        return "login"

@@ -11,7 +11,7 @@ if __name__ == "__main__":
 
     # test
     tradePlace = "bitopro"
-    lookingDataType = "Tick"
+    lookingDataType = "All"
     lookingCoinType = "eth"
     
     # prod
