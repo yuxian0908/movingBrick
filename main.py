@@ -9,8 +9,13 @@ if __name__ == "__main__":
     from tradePlace.bitfinex import bitfinex
     from tradePlace.bittrex import bittrex
 
+    from advise.moveBrick import moveBrick
+
     # test
-    tradePlace = "bittrex"
+    tradePlace = "advise"
+    if tradePlace=="advise":
+        local = "bitopro"
+        abroad = "cex"
     lookingDataType = "All"
     lookingCoinType = "btc"
     
@@ -24,7 +29,6 @@ if __name__ == "__main__":
     # print('enter what type of coin you want to look up')
     # lookingCoinType = input("input:")
 
-
     Data = {
         # local tradePlace
         "MaxMaiCoin" : lambda: MaxMaiCoin(lookingDataType,lookingCoinType).router(),
@@ -37,6 +41,10 @@ if __name__ == "__main__":
         "HitBTC" : lambda: HitBTC(lookingDataType,lookingCoinType).router(),
         "poloniex" : lambda: poloniex(lookingDataType,lookingCoinType).router(),
         "bittrex" : lambda: bittrex(lookingDataType,lookingCoinType).router(),
+
+        # advise 
+        "advise" : lambda: moveBrick(local,abroad,lookingDataType,lookingCoinType).advise()
+
     }.get(tradePlace, lambda: print('we do not support this trade place'))()
 
     print("==============================================")
