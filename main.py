@@ -10,9 +10,9 @@ if __name__ == "__main__":
     from tradePlace.bittrex import bittrex
 
     # test
-    tradePlace = "HitBTC"
+    tradePlace = "poloniex"
     lookingDataType = "All"
-    lookingCoinType = "btc"
+    lookingCoinType = "ltc"
     
     # prod
     # print('enter the trading place')
@@ -34,10 +34,10 @@ if __name__ == "__main__":
         "binance" : lambda: binance(lookingDataType,lookingCoinType).router(),
         "bitfinex" : lambda: bitfinex(lookingDataType,lookingCoinType).router(),
         "cex" : lambda: cex(lookingDataType,lookingCoinType).router(),
-
-        # not done yet
         "HitBTC" : lambda: HitBTC(lookingDataType,lookingCoinType).router(),
         "poloniex" : lambda: poloniex(lookingDataType,lookingCoinType).router(),
+
+        # not done yet
         "bittrex" : lambda: binance(lookingDataType,lookingCoinType).router(),
     }.get(tradePlace, lambda: print('we do not support this trade place'))()
 
