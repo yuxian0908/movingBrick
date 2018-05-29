@@ -76,9 +76,9 @@ class MaxMaiCoin(tradePlace):
         
         data = json.loads(apiData.content)
         returnData = {
-            'ask':data['formatted_buy_price_in_twd'],
-            'bid':data['formatted_sell_price_in_twd'],
-            'deal':data['formatted_price_in_twd']
+            'ask':Decimal(data['raw_buy_price_in_twd'])/Decimal(100000),
+            'bid':Decimal(data['raw_sell_price_in_twd'])/Decimal(100000),
+            'deal':Decimal(data['raw_price_in_twd'])/Decimal(100000)
         }
         res.append(returnData)
         return res

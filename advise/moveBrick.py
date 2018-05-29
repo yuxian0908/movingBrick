@@ -17,12 +17,20 @@ class moveBrick():
         return
     
     def advise(self):
-        localPlaces = ["MaxMaiCoin","bitopro"]
-        abroadPlaces = ["binance","bitfinex","cex","HitBTC","poloniex","bittrex"]
+        # for test
+        localPlaces = ["bitopro"]
+        abroadPlaces = ["binance","bitfinex"]
         coinType = ["btc","ltc","eth"]
         arbType = ["localArbitrage", "abroadArbitrage"]
+        dataLen = 1
+
+        # for prod
+        # localPlaces = ["MaxMaiCoin","bitopro"]
+        # abroadPlaces = ["binance","bitfinex","cex","HitBTC","poloniex","bittrex"]
+        # coinType = ["btc","ltc","eth"]
+        # arbType = ["localArbitrage", "abroadArbitrage"]
+        # dataLen = 3
         dataTypes = "All"
-        dataLen = 3
 
         arbTypeIndex = 0
         localPlaceIndex = 0
@@ -37,36 +45,34 @@ class moveBrick():
             abroadPlacesIndex<len(abroadPlaces) and coinTypeIndex<len(coinType) and dataIndex<dataLen):
             res = {}
             count = count+1
-            print(count)
+            print("count: ",count)
             try:
                 res = self._cpuArb(arbType[arbTypeIndex], localPlaces[localPlaceIndex], abroadPlaces[abroadPlacesIndex], dataTypes, coinType[coinTypeIndex], dataIndex)
             except KeyboardInterrupt:
                 sys.exit()
             except:
                 res = {}
-
             resAry.append(res)
-            if arbTypeIndex<len(arbType)-1:
+            if dataIndex<dataLen-1:
+                dataIndex = dataIndex+1
+            elif arbTypeIndex<len(arbType)-1:
                 arbTypeIndex = arbTypeIndex+1
+                dataIndex = 0
             elif localPlaceIndex<len(localPlaces)-1:
                 localPlaceIndex = localPlaceIndex+1
+                dataIndex = 0
                 arbTypeIndex = 0
             elif abroadPlacesIndex<len(abroadPlaces)-1:
                 abroadPlacesIndex = abroadPlacesIndex+1
+                dataIndex = 0
                 arbTypeIndex = 0
                 localPlaceIndex = 0
             elif coinTypeIndex<len(coinType):
                 coinTypeIndex = coinTypeIndex+1
+                dataIndex = 0
                 arbTypeIndex = 0
                 localPlaceIndex = 0
                 abroadPlacesIndex = 0
-            elif dataIndex<dataLen:
-                dataIndex = dataIndex+1
-                arbTypeIndex = 0
-                localPlaceIndex = 0
-                abroadPlacesIndex = 0
-                coinTypeIndex = 0
-            print(resAry)
         return resAry
 
 
@@ -77,6 +83,7 @@ class moveBrick():
         res = {'Arb': "false"}
         if(ArbType=="localArbitrage"):
             localArbitrage = (abroad[dataIndex]['bid']/local[dataIndex]['ask'])*Decimal(1.99)
+            
             if localArbitrage>1.01:
                 res = {
                     'Arb': "true",
