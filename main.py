@@ -12,12 +12,9 @@ if __name__ == "__main__":
     from advise.moveBrick import moveBrick
 
     # test
-    tradePlace = "advise"
-    if tradePlace=="advise":
-        local = "bitopro"
-        abroad = "cex"
-    lookingDataType = "All"
-    lookingCoinType = "btc"
+    tradePlace = "MaxMaiCoin"
+    lookingDataType = "Tick"
+    lookingCoinType = "ltc"
     
     # prod
     # print('enter the trading place')
@@ -43,7 +40,7 @@ if __name__ == "__main__":
         "bittrex" : lambda: bittrex(lookingDataType,lookingCoinType).router(),
 
         # advise 
-        "advise" : lambda: moveBrick(local,abroad,lookingDataType,lookingCoinType).advise()
+        "advise" : lambda: moveBrick().advise()
 
     }.get(tradePlace, lambda: print('we do not support this trade place'))()
 

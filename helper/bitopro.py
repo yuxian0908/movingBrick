@@ -7,6 +7,7 @@ from lxml import html
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from PIL import Image
+import sys
 
 class bitoproHelper:
     def __init__(self):
@@ -30,10 +31,10 @@ class bitoproHelper:
         while count<len(indexes):
             try:
                 index = indexes[count]
-                option = webdriver.ChromeOptions()
-                option.add_argument('headless')
-                browser = webdriver.Chrome(chrome_options=option)
-                # browser = webdriver.Chrome()
+                # option = webdriver.ChromeOptions()
+                # option.add_argument('headless')
+                # browser = webdriver.Chrome(chrome_options=option)
+                browser = webdriver.Chrome()
 
                 # enter loginin div
                 browser.get(LOGIN_URL)
@@ -89,6 +90,8 @@ class bitoproHelper:
                 cookiefile.write("\n")
                 cookiefile.close()
                 browser.close()
+            except KeyboardInterrupt:
+                sys.exit()
             except:
                 print("=================something wrong===================")
                 count = count-1

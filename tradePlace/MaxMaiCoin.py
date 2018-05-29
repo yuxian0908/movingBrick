@@ -20,71 +20,65 @@ class MaxMaiCoin(tradePlace):
 
 
     def Tick(self):
-        btcToTwd = requests.get("https://api.maicoin.com/v1/prices/twd")
-        returnData = ""
-
-        def converseCoin(btcToCoin1,btcToCoin2):
-            btcToCoin1Price = json.loads(btcToCoin1.text)['price']
-            btcToCoin2Price = json.loads(btcToCoin2.text)['price']
-            return Decimal(btcToCoin1Price)/Decimal(btcToCoin2Price)
-
-        if self.lookingCoinType=="btc":
-            dataObj = json.loads(btcToTwd.text)
-            returnData = dataObj['price']
-        elif self.lookingCoinType=="usdt":
-            btcToUsd = requests.get("https://api.maicoin.com/v1/prices/usd")
-            returnData = converseCoin(btcToTwd,btcToUsd)
-        elif self.lookingCoinType=="eth":
-            btcToEth = requests.get("https://api.maicoin.com/v1/prices/eth")
-            returnData = converseCoin(btcToTwd,btcToEth)
-        elif self.lookingCoinType=="ltc":
-            btcToLtc = requests.get("https://api.maicoin.com/v1/prices/ltc")
-            returnData = converseCoin(btcToTwd,btcToLtc)
-        else:
-            returnData = "we do not support this coin"
-
-        return returnData
-
-
-    def All(self):
         URL = "https://www.maicoin.com/zh-TW/charts"
         option = webdriver.ChromeOptions()
         option.add_argument('headless')
         browser = webdriver.Chrome(chrome_options=option)
+        # browser = webdriver.Chrome()
         browser.get(URL)
         cookies_list = browser.get_cookies()
+        browser.close()
         cookies_dict = {}
         for cookie in cookies_list:
             cookies_dict[cookie['name']] = cookie['value']
-            
-
-        def converseCoin(btcToCoin1,btcToCoin2):
-            btcToCoin1Price = json.loads(btcToCoin1.text)['price']
-            btcToCoin2Price = json.loads(btcToCoin2.text)['price']
-            return Decimal(btcToCoin1Price)/Decimal(btcToCoin2Price)
-
+        
         returnData = ""
+        session = requests.Session() 
         if self.lookingCoinType=="btc":
-            session = requests.Session() 
-            btcToTwd = session.get("https://www.maicoin.com/api/prices/btc-twd",cookies=cookies_dict)
-            data = json.loads(btcToTwd.content)
-            returnData = {
-                'ask':data['raw_buy_price'],
-                'bid':data['raw_sell_price'],
-                'deal':data['raw_price']
-            }
-
-
-        elif self.lookingCoinType=="usdt":
-            btcToUsd = requests.get("https://api.maicoin.com/v1/prices/usd")
-            returnData = converseCoin(btcToTwd,btcToUsd)
+            apiData = session.get("https://www.maicoin.com/api/prices/btc-twd",cookies=cookies_dict)
         elif self.lookingCoinType=="eth":
-            btcToEth = requests.get("https://api.maicoin.com/v1/prices/eth")
-            returnData = converseCoin(btcToTwd,btcToEth)
+            apiData = session.get("https://www.maicoin.com/api/prices/eth-twd",cookies=cookies_dict)
         elif self.lookingCoinType=="ltc":
-            btcToLtc = requests.get("https://api.maicoin.com/v1/prices/ltc")
-            returnData = converseCoin(btcToTwd,btcToLtc)
+            apiData = session.get("https://www.maicoin.com/api/prices/ltc-twd",cookies=cookies_dict)
         else:
             returnData = "we do not support this coin"
+        
+        data = json.loads(apiData.content)
+        returnData = data['formatted_price_in_twd']
 
         return returnData
+
+
+    def All(self):        
+        URL = "https://www.maicoin.com/zh-TW/charts"
+        option = webdriver.ChromeOptions()
+        option.add_argument('headless')
+        browser = webdriver.Chrome(chrome_options=option)
+        # browser = webdriver.Chrome()
+        browser.get(URL)
+        cookies_list = browser.get_cookies()
+        browser.close()
+        cookies_dict = {}
+        for cookie in cookies_list:
+            cookies_dict[cookie['name']] = cookie['value']
+
+        returnData = ""
+        res = []
+        session = requests.Session() 
+        if self.lookingCoinType=="btc":
+            apiData = session.get("https://www.maicoin.com/api/prices/btc-twd",cookies=cookies_dict)
+        elif self.lookingCoinType=="eth":
+            apiData = session.get("https://www.maicoin.com/api/prices/eth-twd",cookies=cookies_dict)
+        elif self.lookingCoinType=="ltc":
+            apiData = session.get("https://www.maicoin.com/api/prices/ltc-twd",cookies=cookies_dict)
+        else:
+            returnData = "we do not support this coin"
+        
+        data = json.loads(apiData.content)
+        returnData = {
+            'ask':data['formatted_buy_price_in_twd'],
+            'bid':data['formatted_sell_price_in_twd'],
+            'deal':data['formatted_price_in_twd']
+        }
+        res.append(returnData)
+        return res
