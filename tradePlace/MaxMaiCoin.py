@@ -20,65 +20,59 @@ class MaxMaiCoin(tradePlace):
 
 
     def Tick(self):
-        URL = "https://www.maicoin.com/zh-TW/charts"
+        URL = "https://max.maicoin.com/markets/btctwd"
         option = webdriver.ChromeOptions()
         option.add_argument('headless')
+        option.add_argument("--window-size=1296,696")
         browser = webdriver.Chrome(chrome_options=option)
         # browser = webdriver.Chrome()
         browser.get(URL)
-        cookies_list = browser.get_cookies()
-        browser.close()
-        cookies_dict = {}
-        for cookie in cookies_list:
-            cookies_dict[cookie['name']] = cookie['value']
-        
-        returnData = ""
-        session = requests.Session() 
-        if self.lookingCoinType=="btc":
-            apiData = session.get("https://www.maicoin.com/api/prices/btc-twd",cookies=cookies_dict)
-        elif self.lookingCoinType=="eth":
-            apiData = session.get("https://www.maicoin.com/api/prices/eth-twd",cookies=cookies_dict)
-        elif self.lookingCoinType=="ltc":
-            apiData = session.get("https://www.maicoin.com/api/prices/ltc-twd",cookies=cookies_dict)
-        else:
-            returnData = "we do not support this coin"
-        
-        data = json.loads(apiData.content)
-        returnData = data['formatted_price_in_twd']
 
-        return returnData
+        indexes = ["1","2","3"]
+        index = ""
+        if self.lookingCoinType=="btc":
+            index = indexes[0]
+        elif self.lookingCoinType=="ltc":
+            index = indexes[2]
+        elif self.lookingCoinType=="eth":
+            index = indexes[1]
+        apiData = browser.find_element_by_xpath(".//*[@id='market_list']//table[contains(@class, 'twd')]/tbody/tr["+index+"]/td[2]/span").text
+
+        return apiData
 
 
     def All(self):        
-        URL = "https://www.maicoin.com/zh-TW/charts"
+        URL = "https://max.maicoin.com/markets/btctwd"
         option = webdriver.ChromeOptions()
         option.add_argument('headless')
+        option.add_argument("--window-size=1296,696")
         browser = webdriver.Chrome(chrome_options=option)
         # browser = webdriver.Chrome()
         browser.get(URL)
-        cookies_list = browser.get_cookies()
-        browser.close()
-        cookies_dict = {}
-        for cookie in cookies_list:
-            cookies_dict[cookie['name']] = cookie['value']
 
-        returnData = ""
-        res = []
-        session = requests.Session() 
+        indexes = ["1","2","3"]
+        index = ""
         if self.lookingCoinType=="btc":
-            apiData = session.get("https://www.maicoin.com/api/prices/btc-twd",cookies=cookies_dict)
-        elif self.lookingCoinType=="eth":
-            apiData = session.get("https://www.maicoin.com/api/prices/eth-twd",cookies=cookies_dict)
+            index = indexes[0]
         elif self.lookingCoinType=="ltc":
-            apiData = session.get("https://www.maicoin.com/api/prices/ltc-twd",cookies=cookies_dict)
-        else:
-            returnData = "we do not support this coin"
+            index = indexes[2]
+        elif self.lookingCoinType=="eth":
+            index = indexes[1]
+        browser.find_element_by_xpath(".//*[@id='market_list']//table[contains(@class, 'twd')]/tbody/tr["+index+"]").click()
+
+        trades = ["1","2","3","4","5"]
+        results = list()
         
-        data = json.loads(apiData.content)
-        returnData = {
-            'ask':Decimal(data['raw_buy_price_in_twd'])/Decimal(100000),
-            'bid':Decimal(data['raw_sell_price_in_twd'])/Decimal(100000),
-            'deal':Decimal(data['raw_price_in_twd'])/Decimal(100000)
-        }
-        res.append(returnData)
-        return res
+        for trade in trades:
+            result = {
+                'bid': browser.find_element_by_xpath(".//*[@id='order_book_body']//table[contains(@class, 'bids')]/tbody/tr["+trade+"]/td[3]/div").text,
+                'ask': browser.find_element_by_xpath(".//*[@id='order_book_body']//table[contains(@class, 'asks')]/tbody/tr["+trade+"]/td[1]/div").text,
+                'bidVolumns':browser.find_element_by_xpath(".//*[@id='order_book_body']//table[contains(@class, 'bids')]/tbody/tr["+trade+"]/td[2]/div").text,
+                'askVolumns': browser.find_element_by_xpath(".//*[@id='order_book_body']//table[contains(@class, 'asks')]/tbody/tr["+trade+"]/td[2]/div").text,
+            }
+            results.append(result)
+
+        returnData = results
+        return returnData
+        
+

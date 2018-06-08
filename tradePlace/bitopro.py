@@ -26,62 +26,69 @@ class bitopro(tradePlace):
 
 
     def Tick(self):
-        # use request to get data
-        cookies = open('helper/bitoproCookies.txt', "r")
-        cookiesAry = cookies.readlines()
+        URL = "https://www.bitopro.com/"
+        option = webdriver.ChromeOptions()
+        option.add_argument('headless')
+        browser = webdriver.Chrome(chrome_options=option)
+        # browser = webdriver.Chrome()
+        browser.get(URL)
+        browser.find_element_by_xpath(".//*[@id='section0']//div[contains(@class, 'welcome-btns')]/a[contains(@role, 'button')]").click()
 
+        apiData = ""
         if self.lookingCoinType=="btc":
-            cookies_dict = cookiesAry[0]
-            cookies_dict = json.loads(cookies_dict)['1']
+            apiData = browser.find_element_by_xpath(".//*[@id='crypto']//tbody/tr[2]/td[2]").text
         elif self.lookingCoinType=="ltc":
-            cookies_dict = cookiesAry[1]
-            cookies_dict = json.loads(cookies_dict)['2']
+            apiData = browser.find_element_by_xpath(".//*[@id='crypto']//tbody/tr[3]/td[2]").text
         elif self.lookingCoinType=="eth":
-            cookies_dict = cookiesAry[2]
-            cookies_dict = json.loads(cookies_dict)['3']
-
-
-        currentTime = int(time.time())
-        beginTime = str(currentTime-1000)
-        currentTime = str(currentTime)
-        apiData = requests.get("https://www.bitopro.com/trading_datas/history?resolution=180&from="+beginTime+"&to="+currentTime, cookies=cookies_dict)
-        apiData = json.loads(apiData.text)
-        return apiData[0][4]
-
+            apiData = browser.find_element_by_xpath(".//*[@id='crypto']//tbody/tr[4]/td[2]").text
+        return apiData
 
     def All(self):
-        # use request to get data
-        cookies = open('helper/bitoproCookies.txt', "r")
-        cookiesAry = cookies.readlines()
-
+        URL = "https://www.bitopro.com/"
+        indexes = ["1","2","3"]
         if self.lookingCoinType=="btc":
-            cookies_dict = cookiesAry[0]
-            cookies_dict = json.loads(cookies_dict)['1']
+            index = indexes[0]
         elif self.lookingCoinType=="ltc":
-            cookies_dict = cookiesAry[1]
-            cookies_dict = json.loads(cookies_dict)['2']
+            index = indexes[1]
         elif self.lookingCoinType=="eth":
-            cookies_dict = cookiesAry[2]
-            cookies_dict = json.loads(cookies_dict)['3']
-
-
-        currentTime = int(time.time())
-        beginTime = str(currentTime-48000)
-        currentTime = str(currentTime)
-        apiData = requests.get("https://www.bitopro.com/trading_datas/history?resolution=180&from="+beginTime+"&to="+currentTime, cookies=cookies_dict)
-        apiData = json.loads(apiData.text)
+            index = indexes[2]
         
+
+        option = webdriver.ChromeOptions()
+        option.add_argument('headless')
+        option.add_argument("--window-size=1296,696")
+        browser = webdriver.Chrome(chrome_options=option)
+        # browser = webdriver.Chrome()
+
+        browser.implicitly_wait(30)
+        browser.get(URL)
+
+        # enter index page
+        browser.find_element_by_xpath(".//*[@id='section0']//div[contains(@class, 'welcome-btns')]/a[contains(@role, 'button')]").click()
+
+        # find the coin you are looking for
+        browser.maximize_window()
+        browser.find_element_by_xpath(".//*[@id='navbar']/ul/li[contains(@class, 'currency')]/a").click()
+        time.sleep(0.5)
+        browser.find_element_by_xpath(".//*[@id='navbar']/ul/li[contains(@class, 'currency')]/ul[contains(@role,'menu')]/*["+index+"]/a").click()
+        
+        # find the trade panel
+        browser.find_element_by_xpath(".//*[@id='depth_tab']/a").click()
+      
+        trades = ["2","3","4","5","6"]
         results = list()
         
-        for data in apiData:
+        for trade in trades:
             result = {
-                'bid': data[1],
-                'ask': data[2],
-                'deal': data[4],
-                'volumns': data[5]
+                'bid': browser.find_element_by_xpath(".//*[@id='order_book']//ol[contains(@class, 'left')]/li["+trade+"]/span[4]").text,
+                'ask': browser.find_element_by_xpath(".//*[@id='order_book']//ol[contains(@class, 'right')]/li["+trade+"]/span[1]").text,
+                'bidVolumns':browser.find_element_by_xpath(".//*[@id='order_book']//ol[contains(@class, 'left')]/li["+trade+"]/span[2]").text,
+                'askVolumns': browser.find_element_by_xpath(".//*[@id='order_book']//ol[contains(@class, 'right')]/li["+trade+"]/span[3]").text,
             }
             results.append(result)
-        return results
+
+        returnData = results
+        return returnData
 
     def login(self):
         helper = bitoproHelper()
