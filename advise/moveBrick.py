@@ -10,15 +10,18 @@ from tradePlace.HitBTC import HitBTC
 from tradePlace.poloniex import poloniex
 from tradePlace.bitfinex import bitfinex
 from tradePlace.bittrex import bittrex
+from helper.calculator import fees
+from helper.calculator import formula
 
 
 class moveBrick():
-    def __init__(self,localPlaces,abroadPlaces,coinType,arbType,dataLen):
+    def __init__(self,localPlaces,abroadPlaces,coinType,arbType,dataLen,volumn):
         self.localPlaces = localPlaces
         self.abroadPlaces = abroadPlaces
         self.coinType = coinType
         self.arbType = arbType
         self.dataLen = dataLen
+        self.volumn = volumn
         return
     
     def advise(self):
@@ -28,6 +31,7 @@ class moveBrick():
         coinType = self.coinType
         arbType = self.arbType
         dataLen = self.dataLen
+        volumn = self.volumn
         dataTypes = "All"
 
         # iter seeds
@@ -43,7 +47,7 @@ class moveBrick():
             abroadPlacesIndex<len(abroadPlaces) and coinTypeIndex<len(coinType) and dataIndex<dataLen):
             res = {'Arb': "false"}
             try:
-                res = self._cpuArb(arbType[arbTypeIndex], localPlaces[localPlaceIndex], abroadPlaces[abroadPlacesIndex], dataTypes, coinType[coinTypeIndex], dataIndex)
+                res = self._cpuArb(arbType[arbTypeIndex], localPlaces[localPlaceIndex], abroadPlaces[abroadPlacesIndex], dataTypes, coinType[coinTypeIndex], dataIndex, volumn)
             except KeyboardInterrupt:
                 sys.exit()
             except:
@@ -53,6 +57,7 @@ class moveBrick():
                 print(res['coinType'],"可以套利")
                 print("套利比例:",res['ArbRate'])
                 print("從 ",res['from']," 搬運到 ",res['to'])
+                print("此價格最多可以搬",res['volumnAval'])
             # resAry.append(res)
 
             # iterator seeds
@@ -79,30 +84,56 @@ class moveBrick():
         # return resAry
         return "end"
 
-    def _cpuArb(self, ArbType, localPlace, abroadPlace, lookingDataType, lookingCoinType, dataIndex):
+    def _cpuArb(self, ArbType, localPlace, abroadPlace, lookingDataType, lookingCoinType, dataIndex, wantVolumn):
         data = self._getData(localPlace,abroadPlace,lookingDataType,lookingCoinType)
         abroad = data['abroad']
         local = data['local']
         res = {'Arb': "false"}
+        charges = fees(abroadPlace,lookingCoinType).routes(wantVolumn)
+
+        def culArb(base,target):
+            # find volumn for each trade
+            volumnSum = float(0)
+            count = 0
+            while(count<=dataIndex):
+                count+=1
+                volumnSum = volumnSum + float(target[count]['bidVolumns'])
+            # make sure volumn is enough
+            Arbitrage = 0
+            if volumnSum > wantVolumn:
+                Arbitrage = formula(target,base,charges,wantVolumn,dataIndex)
+
+            return {
+                'rate': Arbitrage,
+                'volumnSum': volumnSum
+            }
+
         if(ArbType=="localArbitrage"):
-            localArbitrage = (abroad[dataIndex]['bid']/local[dataIndex]['ask'])*Decimal(0.99)
+            localData = culArb(local,abroad)
+            localArbitrage = localData['rate']
+            # determin whether the rate is enough
             if localArbitrage>1.01:
                 res = {
                     'Arb': "true",
                     'ArbRate': localArbitrage,
                     'from': localPlace,
                     'to': abroadPlace,
-                    'coinType': lookingCoinType
+                    'coinType': lookingCoinType,
+                    'volumnAval': localData['volumnSum']
                 }
+
         elif(ArbType=="abroadArbitrage"):
-            abroadArbitrage = (local[dataIndex]['bid']/abroad[dataIndex]['ask'])*Decimal(0.99)
+            abroadData = culArb(local,abroad)
+            abroadArbitrage = abroadData['rate']
+            # determin whether the rate is enough
             if abroadArbitrage>1.01:
                 res = {
                     'Arb': "true",
                     'ArbRate': abroadArbitrage,
                     'from': abroadPlace,
                     'to': localPlace,
-                    'coinType': lookingCoinType
+                    'coinType': lookingCoinType,
+                    'volumnAval': abroadData['volumnSum']
                 }
         return res
 

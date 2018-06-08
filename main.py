@@ -18,6 +18,7 @@ if __name__ == "__main__":
     coinType = ["btc"]
     arbType = ["localArbitrage", "abroadArbitrage"]
     dataLen = 1
+    volumn = 0.01
 
     # # for prod
     # lookup = "advise"
@@ -47,7 +48,7 @@ if __name__ == "__main__":
         # "bittrex" : lambda: bittrex(lookingDataType,lookingCoinType).router(),
 
         # advise 
-        "advise" : lambda: moveBrick(localPlaces,abroadPlaces,coinType,arbType,dataLen).advise()
+        "advise" : lambda: moveBrick(localPlaces,abroadPlaces,coinType,arbType,dataLen,volumn).advise()
 
     }.get(lookup, lambda: print('we do not support this trade place'))()
 
