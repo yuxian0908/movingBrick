@@ -13,25 +13,24 @@ from tradePlace.bittrex import bittrex
 
 
 class moveBrick():
-    def __init__(self):
+    def __init__(self,localPlaces,abroadPlaces,coinType,arbType,dataLen):
+        self.localPlaces = localPlaces
+        self.abroadPlaces = abroadPlaces
+        self.coinType = coinType
+        self.arbType = arbType
+        self.dataLen = dataLen
         return
     
     def advise(self):
-        # for test
-        localPlaces = ["bitopro"]
-        abroadPlaces = ["binance"]
-        coinType = ["btc","ltc","eth"]
-        arbType = ["abroadArbitrage"]
-        dataLen = 1
-
-        # for prod
-        # localPlaces = ["MaxMaiCoin","bitopro"]
-        # abroadPlaces = ["binance","bitfinex","cex","HitBTC","poloniex","bittrex"]
-        # coinType = ["btc","ltc","eth"]
-        # arbType = ["localArbitrage", "abroadArbitrage"]
-        # dataLen = 3
+        # init varibles
+        localPlaces = self.localPlaces
+        abroadPlaces = self.abroadPlaces
+        coinType = self.coinType
+        arbType = self.arbType
+        dataLen = self.dataLen
         dataTypes = "All"
 
+        # iter seeds
         arbTypeIndex = 0
         localPlaceIndex = 0
         abroadPlacesIndex = 0
@@ -78,7 +77,7 @@ class moveBrick():
                 localPlaceIndex = 0
                 abroadPlacesIndex = 0
         # return resAry
-
+        return "end"
 
     def _cpuArb(self, ArbType, localPlace, abroadPlace, lookingDataType, lookingCoinType, dataIndex):
         data = self._getData(localPlace,abroadPlace,lookingDataType,lookingCoinType)
@@ -86,7 +85,7 @@ class moveBrick():
         local = data['local']
         res = {'Arb': "false"}
         if(ArbType=="localArbitrage"):
-            localArbitrage = (abroad[dataIndex]['bid']/local[dataIndex]['ask'])*Decimal(1.99)
+            localArbitrage = (abroad[dataIndex]['bid']/local[dataIndex]['ask'])*Decimal(0.99)
             if localArbitrage>1.01:
                 res = {
                     'Arb': "true",
@@ -96,7 +95,7 @@ class moveBrick():
                     'coinType': lookingCoinType
                 }
         elif(ArbType=="abroadArbitrage"):
-            abroadArbitrage = (local[dataIndex]['bid']/abroad[dataIndex]['ask'])*Decimal(1.99)
+            abroadArbitrage = (local[dataIndex]['bid']/abroad[dataIndex]['ask'])*Decimal(0.99)
             if abroadArbitrage>1.01:
                 res = {
                     'Arb': "true",
