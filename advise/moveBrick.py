@@ -19,9 +19,9 @@ class moveBrick():
     def advise(self):
         # for test
         localPlaces = ["bitopro"]
-        abroadPlaces = ["binance","bitfinex"]
+        abroadPlaces = ["binance"]
         coinType = ["btc","ltc","eth"]
-        arbType = ["localArbitrage", "abroadArbitrage"]
+        arbType = ["abroadArbitrage"]
         dataLen = 1
 
         # for prod
@@ -38,21 +38,25 @@ class moveBrick():
         coinTypeIndex = 0
         dataIndex = 0
 
-        resAry = []
-        count = 0
+        # resAry = []
 
         while(arbTypeIndex<len(arbType) and localPlaceIndex<len(localPlaces) and
             abroadPlacesIndex<len(abroadPlaces) and coinTypeIndex<len(coinType) and dataIndex<dataLen):
-            res = {}
-            count = count+1
-            print("count: ",count)
+            res = {'Arb': "false"}
             try:
                 res = self._cpuArb(arbType[arbTypeIndex], localPlaces[localPlaceIndex], abroadPlaces[abroadPlacesIndex], dataTypes, coinType[coinTypeIndex], dataIndex)
             except KeyboardInterrupt:
                 sys.exit()
             except:
-                res = {}
-            resAry.append(res)
+                print("Unexpected error:", sys.exc_info()[0])
+
+            if(res['Arb']=="true"):
+                print(res['coinType'],"可以套利")
+                print("套利比例:",res['ArbRate'])
+                print("從 ",res['from']," 搬運到 ",res['to'])
+            # resAry.append(res)
+
+            # iterator seeds
             if dataIndex<dataLen-1:
                 dataIndex = dataIndex+1
             elif arbTypeIndex<len(arbType)-1:
@@ -73,7 +77,7 @@ class moveBrick():
                 arbTypeIndex = 0
                 localPlaceIndex = 0
                 abroadPlacesIndex = 0
-        return resAry
+        # return resAry
 
 
     def _cpuArb(self, ArbType, localPlace, abroadPlace, lookingDataType, lookingCoinType, dataIndex):
@@ -83,7 +87,6 @@ class moveBrick():
         res = {'Arb': "false"}
         if(ArbType=="localArbitrage"):
             localArbitrage = (abroad[dataIndex]['bid']/local[dataIndex]['ask'])*Decimal(1.99)
-            
             if localArbitrage>1.01:
                 res = {
                     'Arb': "true",

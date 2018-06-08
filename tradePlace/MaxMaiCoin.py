@@ -23,6 +23,7 @@ class MaxMaiCoin(tradePlace):
         URL = "https://max.maicoin.com/markets/btctwd"
         option = webdriver.ChromeOptions()
         option.add_argument('headless')
+        option.add_argument('--log-level=3')
         option.add_argument("--window-size=1296,696")
         browser = webdriver.Chrome(chrome_options=option)
         # browser = webdriver.Chrome()
@@ -45,6 +46,7 @@ class MaxMaiCoin(tradePlace):
         URL = "https://max.maicoin.com/markets/btctwd"
         option = webdriver.ChromeOptions()
         option.add_argument('headless')
+        option.add_argument('--log-level=3')
         option.add_argument("--window-size=1296,696")
         browser = webdriver.Chrome(chrome_options=option)
         # browser = webdriver.Chrome()
@@ -65,10 +67,10 @@ class MaxMaiCoin(tradePlace):
         
         for trade in trades:
             result = {
-                'bid': browser.find_element_by_xpath(".//*[@id='order_book_body']//table[contains(@class, 'bids')]/tbody/tr["+trade+"]/td[3]/div").text,
-                'ask': browser.find_element_by_xpath(".//*[@id='order_book_body']//table[contains(@class, 'asks')]/tbody/tr["+trade+"]/td[1]/div").text,
-                'bidVolumns':browser.find_element_by_xpath(".//*[@id='order_book_body']//table[contains(@class, 'bids')]/tbody/tr["+trade+"]/td[2]/div").text,
-                'askVolumns': browser.find_element_by_xpath(".//*[@id='order_book_body']//table[contains(@class, 'asks')]/tbody/tr["+trade+"]/td[2]/div").text,
+                'bid': Decimal(browser.find_element_by_xpath(".//*[@id='order_book_body']//table[contains(@class, 'bids')]/tbody/tr["+trade+"]/td[3]/div").text.replace(",","")),
+                'ask': Decimal(browser.find_element_by_xpath(".//*[@id='order_book_body']//table[contains(@class, 'asks')]/tbody/tr["+trade+"]/td[1]/div").text.replace(",","")),
+                'bidVolumns': Decimal(browser.find_element_by_xpath(".//*[@id='order_book_body']//table[contains(@class, 'bids')]/tbody/tr["+trade+"]/td[2]/div").text.replace(",","")),
+                'askVolumns': Decimal(browser.find_element_by_xpath(".//*[@id='order_book_body']//table[contains(@class, 'asks')]/tbody/tr["+trade+"]/td[2]/div").text.replace(",","")),
             }
             results.append(result)
 

@@ -12,7 +12,7 @@ if __name__ == "__main__":
     from advise.moveBrick import moveBrick
 
     # test
-    tradePlace = "MaxMaiCoin"
+    tradePlace = "advise"
     lookingDataType = "All"
     lookingCoinType = "ltc"
     

@@ -29,6 +29,8 @@ class bitopro(tradePlace):
         URL = "https://www.bitopro.com/"
         option = webdriver.ChromeOptions()
         option.add_argument('headless')
+        option.add_argument('--log-level=3')
+        option.add_argument("--window-size=1296,696")
         browser = webdriver.Chrome(chrome_options=option)
         # browser = webdriver.Chrome()
         browser.get(URL)
@@ -56,6 +58,7 @@ class bitopro(tradePlace):
 
         option = webdriver.ChromeOptions()
         option.add_argument('headless')
+        option.add_argument('--log-level=3')
         option.add_argument("--window-size=1296,696")
         browser = webdriver.Chrome(chrome_options=option)
         # browser = webdriver.Chrome()
@@ -80,10 +83,10 @@ class bitopro(tradePlace):
         
         for trade in trades:
             result = {
-                'bid': browser.find_element_by_xpath(".//*[@id='order_book']//ol[contains(@class, 'left')]/li["+trade+"]/span[4]").text,
-                'ask': browser.find_element_by_xpath(".//*[@id='order_book']//ol[contains(@class, 'right')]/li["+trade+"]/span[1]").text,
-                'bidVolumns':browser.find_element_by_xpath(".//*[@id='order_book']//ol[contains(@class, 'left')]/li["+trade+"]/span[2]").text,
-                'askVolumns': browser.find_element_by_xpath(".//*[@id='order_book']//ol[contains(@class, 'right')]/li["+trade+"]/span[3]").text,
+                'bid': Decimal(browser.find_element_by_xpath(".//*[@id='order_book']//ol[contains(@class, 'left')]/li["+trade+"]/span[4]").text.replace(",","")),
+                'ask': Decimal(browser.find_element_by_xpath(".//*[@id='order_book']//ol[contains(@class, 'right')]/li["+trade+"]/span[1]").text.replace(",","")),
+                'bidVolumns':Decimal(browser.find_element_by_xpath(".//*[@id='order_book']//ol[contains(@class, 'left')]/li["+trade+"]/span[2]").text.replace(",","")),
+                'askVolumns': Decimal(browser.find_element_by_xpath(".//*[@id='order_book']//ol[contains(@class, 'right')]/li["+trade+"]/span[3]").text.replace(",","")),
             }
             results.append(result)
 

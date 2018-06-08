@@ -33,6 +33,8 @@ class bitoproHelper:
                 index = indexes[count]
                 # option = webdriver.ChromeOptions()
                 # option.add_argument('headless')
+                # option.add_argument('--log-level=3')
+                # option.add_argument("--window-size=1296,696")
                 # browser = webdriver.Chrome(chrome_options=option)
                 browser = webdriver.Chrome()
 
@@ -45,6 +47,8 @@ class bitoproHelper:
                 imgURL = browser.find_element_by_xpath(".//*[@id='captcha_key']/../*[1]").get_attribute("src")
                 option = webdriver.ChromeOptions()
                 option.add_argument('headless')
+                option.add_argument('--log-level=3')
+                option.add_argument("--window-size=1296,696")
                 browser2 = webdriver.Chrome(chrome_options=option)
                 # browser2 = webdriver.Chrome()    
                 browser2.get(imgURL)
